@@ -8,7 +8,7 @@ required_pkg_arr=( "phantomjs" "at" )
 
 bin_dir="/usr/local/bin/${app_name}"
 src_dir="/usr/local/src/${app_name}"
-etc_f="/usr/local/etc/${app_name}.js"
+etc_f="/usr/local/etc/${app_name}.conf"
 # log_f="/var/log/${app_name}.log"
 sudoers_etc="/etc/sudoers.d/${app_name}"
 
@@ -50,6 +50,6 @@ echo "
     CONFIGURATION FILES
 ------------------------------------------"
 
-$S_DIR/ft-util/ft_util_conf-update -s "$S_DIR/etc/${app_name}.js" -d "$etc_f"
+$S_DIR/ft-util/ft_util_conf-update -s "$S_DIR/etc/${app_name}.conf" -d "$etc_f"
 
 $S_LOG -d "$S_NAME" "End $S_NAME"

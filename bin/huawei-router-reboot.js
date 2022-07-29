@@ -8,7 +8,7 @@
 //
 // Enter your own modem details here
 
-phantom.injectJs('/usr/local/etc/futur-tech-zabbix-phantomjs.js');
+phantom.injectJs('/usr/local/etc/futur-tech-zabbix-phantomjs.conf');
 
 // import { huawei_rtr_usr, huawei_rtr_pwd, huawei_rtr_host } 
 
