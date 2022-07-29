@@ -10,15 +10,6 @@
 
 phantom.injectJs('/usr/local/etc/futur-tech-zabbix-phantomjs.conf');
 
-// import { huawei_rtr_usr, huawei_rtr_pwd, huawei_rtr_host } 
-
-// import huawei_rtr_usr from '/usr/local/etc/futur-tech-zabbix-phantomjs.conf';
-// var huawei_rtr_usr = 'admin';
-// var huawei_rtr_pwd = 'Retinal-Mower2-Contort';
-// var huawei_rtr_host = '192.168.2.1';
-// End modem details
-//
-//
 // Script specific variables
 var page = require('webpage').create();
 var loadInProgress = false;
