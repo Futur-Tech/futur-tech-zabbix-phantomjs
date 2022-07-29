@@ -7,18 +7,24 @@
 // Requires PhantomJS ~ 2.1.1
 //
 // Enter your own modem details here
-var username = 'admin';
-var password = 'admin';
-var host = '192.168.2.1';
+
+phantom.injectJs('/usr/local/etc/futur-tech-zabbix-phantomjs.js');
+
+// import { huawei_rtr_usr, huawei_rtr_pwd, huawei_rtr_host } 
+
+// import huawei_rtr_usr from '/usr/local/etc/futur-tech-zabbix-phantomjs.conf';
+// var huawei_rtr_usr = 'admin';
+// var huawei_rtr_pwd = 'Retinal-Mower2-Contort';
+// var huawei_rtr_host = '192.168.2.1';
 // End modem details
 //
 //
 // Script specific variables
 var page = require('webpage').create();
 var loadInProgress = false;
-var intervalTime = 100;
-var homeUrl = 'http://' + host + '/html/home.html';
-var rebootUrl = 'http://' + host + '/html/reboot.html';
+var intervalTime = 1000;
+var homeUrl = 'http://' + huawei_rtr_host + '/html/home.html';
+var rebootUrl = 'http://' + huawei_rtr_host + '/html/reboot.html';
 // End script variable
 
 page.onConsoleMessage = function (msg) {
@@ -84,7 +90,36 @@ function waitForLoginDialog(callback) {
     }, intervalTime);
 }
 
+function language(callback) {
+    page.open(homeUrl, function (status) {
+        if (status !== 'success') {
+            console.log('Unable to load home.html');
+            phantom.exit();
+        } else {
+            console.log('Loaded home.html');
+
+            var language = page.evaluate(function () {
+                return $('#lang').prop('selectedIndex');
+            });
+
+            if (language != 0) {
+                console.log('Changing language to English');
+                page.evaluate(function () {
+                    $('#lang').val('en_us').change();
+                });
+                setTimeout(function () {
+                    callback();
+                }, 5000); // 5 second sleep, just to give time for reloading lanaguage
+            } else {
+                console.log('Language is English');
+                callback();
+            }
+        }
+    });
+}
+
 function login(callback) {
+
     page.open(homeUrl, function (status) {
         if (status !== 'success') {
             console.log('Unable to load home.html');
@@ -105,7 +140,7 @@ function login(callback) {
                     $('input#username').val(u);
                     $('input#password').val(p);
                     return true;
-                }, username, password);
+                }, huawei_rtr_usr, huawei_rtr_pwd);
 
                 console.log('Clicking Log In button');
 
@@ -205,7 +240,7 @@ function reboot(callback) {
                     return true;
                 });
 
-                console.log('Clicked reboot confirm button')
+                console.log('Clicked reboot confirm button');
 
                 setTimeout(function () {
                     callback();
@@ -215,9 +250,11 @@ function reboot(callback) {
     });
 }
 
-login(function () {
-    reboot(function () {
-        console.log('Reboot Done')
-        phantom.exit();
+language(function () {
+    login(function () {
+        reboot(function () {
+            console.log('Reboot Done');
+            phantom.exit();
+        });
     });
 });
