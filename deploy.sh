@@ -25,18 +25,15 @@ echo "
 $S_DIR_PATH/ft-util/ft_util_pkg -u -i ${required_pkg_arr[@]} || exit 1
 
 
-# echo "
-#     SETUP SUDOER FILES
-# ------------------------------------------"
+echo "
+    SETUP SUDOER FILES
+------------------------------------------"
 
-# $S_LOG -d $S_NAME -d "$sudoers_etc" "==============================="
-
-# echo "Defaults:${app_user} !requiretty" | sudo EDITOR='tee' visudo --file=$sudoers_etc &>/dev/null
-# echo "${app_user} ALL=NOPASSWD:SETENV:$(type -p rsync),$(type -p bash)" | sudo EDITOR='tee -a' visudo --file=$sudoers_etc &>/dev/null
-# echo "${app_user} ALL=NOPASSWD:SETENV:/usr/bin/samba-tool ntacl sysvolreset" | sudo EDITOR='tee -a' visudo --file=$sudoers_etc &>/dev/null
-# cat $sudoers_etc | $S_LOG -d "$S_NAME" -d "$sudoers_etc" -i 
-
-# $S_LOG -d $S_NAME -d "$sudoers_etc" "==============================="
+$S_LOG -d $S_NAME -d "$sudoers_etc" "==============================="
+echo "Defaults:zabbix !requiretty" | sudo EDITOR='tee' visudo --file=$sudoers_etc &>/dev/null
+echo "zabbix ALL=(ALL) NOPASSWD:$(type -p phantomjs)" | sudo EDITOR='tee -a' visudo --file=$sudoers_etc &>/dev/null
+cat $sudoers_etc | $S_LOG -d "$S_NAME" -d "$sudoers_etc" -i 
+$S_LOG -d $S_NAME -d "$sudoers_etc" "==============================="
 
 
 echo "
